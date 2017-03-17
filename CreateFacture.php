@@ -1,23 +1,38 @@
-<?php include("Gestion_Session.php")?>
+<!-- Page permet d'ajouter une facture dans la base ou une ligne de détail de facture
+-->
+<!--
+Ajout de la feuille qui gère la déconnexion à partir du clique sur le bouton Déconnexion
+-->
+<?php include("Gestion_Session.php") ?>
 <!doctype html>
 <html lang="fr">
 	<head>
 		<meta charset="utf-8">
-		<title>Kleinclaus Consultation Factures</title>
+		<title>Kleinclaus Ajout Factures Ajout dfacture</title>
 		<link rel="stylesheet" href="style.css">
 		<script src="script.js"></script>
 	</head>
 	<body>
-		<?php include("header.php")?>
+		<!--
+		Ajout de la feuille header qui contient les liens vers les pages de la webApp
+		Le "menu"
+		-->
+		<?php include("header.php") ?>
 		<div id="corps">
 			<h1>Les Factures</h1>
 			<h2>Ajouter</h2>
+					<!--formulaire ajout information facture -->
 					<form id="Ajout" action="CreateFacture.php" method="POST">
 						<div>
 							<p><label for="DATEFACTURE">Date de la facturation : </label><input type="date" name="DATEFACTURE" required/></p>
 							<p><label for="NUMCLIENT">NumClient du client : </label>
 							<select name="NUMCLIENT" required>
 								<?php
+								/*
+									But : Afficher les numclient existants
+									Entree : 
+									Sortie : Les numclients dans un menu déroulant
+								*/
 								//Connexion à la base de donnée
 									Try
 									{
@@ -55,7 +70,11 @@
 					</form>
 					
 					<?php
-						//Permettre d'ajouter un facture puis un produit à la fois avec sa quantité dans le détail
+						/*
+							BUT: Ajouter une facture dans la base de donnée
+							ENTREE: Clique bouton ajout / DATEFACTURE / NUMCLIENT
+							SORTIE: Feedback ajout et ajout dans la base
+						*/
 						if (isset($_POST['add']))
 						{
 							//Connexion à la base de donnée
@@ -87,6 +106,7 @@
 					?>
 			<h1>Le détail de la facture<h1>
 			<h2>Ajouter un produit</h2>
+				<!--formulaire ajout détail facture-->
 				<form id="AjoutProd" action="CreateFacture.php" method="POST">
 					<div>
 						<p><label for="NUMFACTURE">Numéro de la facture : </label>
@@ -101,6 +121,11 @@
 							{
 								die('Erreur : ' . $e->getMessage());
 							}
+							/*
+							BUT : Affichage numFacture existant
+							ENTREE : 
+							SORTIE : numFacture existants dans un menu déroulant
+							*/
 							Try 
 							{
 								$reponse = $bdd->query('SELECT NUMFACTURE FROM facture ORDER BY NUMFACTURE ASC;');
@@ -136,6 +161,11 @@
 							{
 								die('Erreur : ' . $e->getMessage());
 							}
+							/*
+							BUT : Affichage numProduit existant
+							ENTREE : 
+							SORTIE : numProduit existants dans un menu déroulant
+							*/
 							Try 
 							{
 								$reponse = $bdd->query('SELECT NUMPRODUIT FROM produit ORDER BY NUMPRODUIT ASC;');
@@ -164,7 +194,9 @@
 					</div>
 				</form>
 				<?php
-					//Permettre d'ajouter un facture puis un produit à la fois avec sa quantité dans le détail
+					// BUT : Ajouter un produit dans le détail d'une facture
+					//ENTREE : NUMFACTURE / NUMPRODUIT / QUANTITE
+					//SORTIE : Feeback ajout et ajout dans la base
 					if (isset($_POST['addprod']))
 					{
 						//Connexion à la base de donnée

@@ -1,4 +1,5 @@
-<!--Feuille php gérant le header-->
+<!--Feuille php contenant le menu avec les liens vers toutes les pages de l'App et le bouton de déconnexion-->
+
 <header>
 	<p><a href="Consultation.php">Accueil</a></p> 
 	<p><a href="Factures.php">Consulter données factures</a></p>	

@@ -1,3 +1,5 @@
+<!-- Page gére la session et la déconnexion
+-->
 <?php
 	//On démarra la session pour accèder aux variables de session
 	session_start();
@@ -11,7 +13,7 @@
 ?>
 <!-- 
 BUT : Vérification de l'existence d'une session sinon renvoi à la page d'identification 
-BUT : Vérification de la variable de temps  de la session si elle existe on vérifie qu'elle n'a pas dépasser 30 minutes sinon on la crée
+BUT : SI appuie sur le bouton déconnexion retour à la page d'identification et destruction de la session
 -->
 <?php
 			if (isset($_SESSION['id']))

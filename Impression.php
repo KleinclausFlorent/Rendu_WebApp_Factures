@@ -1,20 +1,27 @@
-<?php include("Gestion_Session.php")?>
+<!--
+ Page d'impression d'une facture
+-->
+<!--
+Ajout de la feuille qui gère la déconnexion à partir du clique sur le bouton Déconnexion
+-->
+<?php include("Gestion_Session.php") ?>
 <!doctype html>
 <html lang="fr">
 	<head>
 		<meta charset="utf-8">
-		<title>Kleinclaus Consultation Factures</title>
+		<title>Kleinclaus Impression Facture</title>
 		<link rel="stylesheet" href="style.css">
 		<script src="script.js"></script>
 	</head>
 	<body>
-		<?php include("header.php")?>
+		<?php include("header.php") ?>
 		<div id="corps">
 			<h1>Imprimer une facture</h1>
 				<h2>Choix de la facture</h2>
 					<form id="Choisir" action="UpdateFacture.php" method="POST">
 						<div>
 							<p>
+								<!-- formulaire choix de la facture à visualiser avant l'impression-->
 								<label for="NUMFACTURE">NumFacture de la facture : </label>
 								<select name="NUMFACTURE" required>
 									<?php
@@ -27,6 +34,11 @@
 										{
 											die('Erreur : ' . $e->getMessage());
 										}
+										/*
+											BUT : Afficher les NumFacture existant
+											ENTREE : 
+											SORTIE : NumFacture existant dans une menu déroulant
+										*/
 										Try 
 										{
 											$reponse = $bdd->query('SELECT NUMFACTURE FROM facture ORDER BY NUMFACTURE ASC;');

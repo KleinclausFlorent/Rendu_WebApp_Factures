@@ -1,4 +1,9 @@
-<?php include("Gestion_Session.php")?>
+<!-- Page permet de recherche un produit dans la table et d'ajouter un produit
+-->
+<!--
+Ajout de la feuille qui gère la déconnexion à partir du clique sur le bouton Déconnexion
+-->
+<?php include("Gestion_Session.php") ?>
 <!doctype html>
 <html lang="fr">
 	<head>
@@ -8,10 +13,15 @@
 		<script src="script.js"></script>
 	</head>
 	<body>
-		<?php include("header.php")?>
+		<!--
+		Ajout de la feuille header qui contient les liens vers les pages de la webApp
+		Le "menu"
+		-->
+		<?php include("header.php") ?>
 		<div id="corps">
 			<h1>Les Produits</h1>
 				<h2>Consulter</h2>
+				<!--formulaire de recherche dans la table produit-->
 					<form id="Recherche" action="Produits.php" method="POST">
 						<div>
 							<p><label for="NUMPRODUIT">Numéro du produit : </label><input type="text" name="NUMPRODUIT"/></p>
@@ -20,6 +30,7 @@
 							<p><input type="submit" value="Chercher" name="seek" /></p>	
 						</div>
 					</form>
+					<!--formulaire d'ajout dans la table produit-->
 				<h2>Ajouter</h2>
 					<form id="Ajout" action="Produits.php" method="POST">
 						<div>
@@ -40,6 +51,11 @@
 							{
 								die('Erreur : ' . $e->getMessage());
 							}
+							/*
+							BUT: Afficher les données répondant à la recherche
+							ENTREE: clique bouton / NumProd et/ou Libelle et/ou PRIXU
+							SORTIE: un tableau contenant les données correspondantes à la recherche
+							*/
 							Try 
 							{
 								$whereseek="";
@@ -121,6 +137,11 @@
 							{
 								die('Erreur : ' . $e->getMessage());
 							}
+							/*
+							BUT: Ajout d'un produit dans la base
+							ENTREE: LIBELLE / PRIX U / clique bouton
+							SORTIE: Feedback ajout et ajout dans la base
+							*/
 							Try 
 							{
 								$req=$bdd->prepare('INSERT INTO produit(LIBELLE,PRIXUNITAIRE)VALUES(:Lib,:Prix)');

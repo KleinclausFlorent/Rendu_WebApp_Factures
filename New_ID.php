@@ -1,3 +1,6 @@
+<!--
+ Page permettant de créer un nouvel utilisateur pour accéder à la webApp
+-->
 <!doctype html>
 <html lang="fr">
 	<head>
@@ -7,7 +10,7 @@
 		<script src="script.js"></script>
 	</head>
 	<body>
-		<!-- Formulaire de connexion -->
+		<!-- Formulaire de création d'identifiant-->
 		<div id="corps">
 			<h1>Création d'identifiants de connexion</h1>
 			<form id="FormNewID" action="New_ID.php" method="POST">
@@ -30,7 +33,11 @@
 					{
 						die('Erreur : ' . $e->getMessage());
 					}
-					//On essaie de créer le nouvelle identifiant et mot de passe
+					/*
+					BUT : Ajouter un identifiant et un mot de passe dans la table utilisateur et hash du mdp
+					ENTREE : Utilisateur et mot de passe souhaité
+					SORTIE : création id mdp et renvoi vers la page de connexion
+					*/
 					Try 
 					{
 						$bdd->exec('INSERT INTO utilisateur(NOM_UTIL,PASSWORD)

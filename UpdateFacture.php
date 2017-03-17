@@ -1,4 +1,9 @@
-<?php include("Gestion_Session.php")?>
+<!-- Page qui affiche les tables factureset détails factures et qui permet de mettre à jour les données factures ou/et détail facture ou de les supprimer
+-->
+<!--
+Ajout de la feuille qui gère la déconnexion à partir du clique sur le bouton Déconnexion
+-->
+<?php include("Gestion_Session.php") ?>
 <!doctype html>
 <html lang="fr">
 	<head>
@@ -8,7 +13,148 @@
 		<script src="script.js"></script>
 	</head>
 	<body>
-		<?php include("header.php")?>
+		<!--
+		Ajout de la feuille header qui contient les liens vers les pages de la webApp
+		Le "menu"
+		-->
+		<?php include("header.php") ?>
+		<?php
+			if (isset($_POST['updatefac']))
+				{
+					//Connexion à la base de donnée
+					Try
+					{
+						$bdd = new PDO('mysql:host=localhost;dbname=facture;charset=utf8','Florent','1234Florent',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+					}
+					catch (Exception $e)
+					{
+						die('Erreur : ' . $e->getMessage());
+					}
+					/*
+					BUT: mise à jour données factures
+					ENTREE: Numfacture / date fac / Numclient
+					SORTIE: feedback et mise à jour dans la base
+					*/
+					Try 
+					{
+						$req=$bdd->prepare('UPDATE facture SET DATEFACT = :DateFact,NUMCLIENT = :NumClient WHERE NUMFACTURE = :NumFacture');
+						$req->execute(array(
+								'NumFacture'=>$_POST['NUMFACTURE'],
+								'DateFact'=>$_POST['DATEFACT'],
+								'NumClient'=>$_POST["NUMCLIENT"]
+								));
+						echo("Les données facture ont bien été mise à jour.");
+
+						$req->closeCursor();
+					}
+					catch (Exception $e)
+					{
+						echo('Erreur lors de la maj de la facture.'. $e->getMessage());
+					}
+				}
+		?>
+		<?php
+			if (isset($_POST['updatedfac']))
+				{
+					//Connexion à la base de donnée
+					Try
+					{
+						$bdd = new PDO('mysql:host=localhost;dbname=facture;charset=utf8','Florent','1234Florent',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+					}
+					catch (Exception $e)
+					{
+						die('Erreur : ' . $e->getMessage());
+					}
+					/*
+					BUT: mise à jour données détail factures
+					ENTREE: Numfacture / quantité produit / NumProduit
+					SORTIE: feedback et mise à jour dans la base
+					*/
+					Try 
+					{
+						$req=$bdd->prepare('UPDATE dfacture SET QUANTITE = :Quantite WHERE NUMFACTURE = :NumFacture AND NUMPRODUIT = :NumProduit');
+						$req->execute(array(
+								'NumFacture'=>$_POST['NUMFACTURE'],
+								'Quantite'=>$_POST['QUANTITE'],
+								'NumProduit'=>$_POST["NUMPRODUIT"]
+								));
+						echo("Les données détail facture ont bien été mise à jour.");
+
+						$req->closeCursor();
+					}
+					catch (Exception $e)
+					{
+						echo('Erreur lors de la maj du détail fac.'. $e->getMessage());
+					}
+				}
+		?>
+		<?php
+			if (isset($_POST['deletedFac']))
+				{
+					//Connexion à la base de donnée
+					Try
+					{
+						$bdd = new PDO('mysql:host=localhost;dbname=facture;charset=utf8','Florent','1234Florent',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+					}
+					catch (Exception $e)
+					{
+						die('Erreur : ' . $e->getMessage());
+					}
+					/*
+					BUT: suppression données détail factures
+					ENTREE: Numfacture et NumProduit
+					SORTIE: feedback et suppression dans la base
+					*/
+					Try 
+					{
+						$req=$bdd->prepare('DELETE FROM dfacture WHERE NUMFACTURE = :NumFacture AND NUMPRODUIT = :NumProduit');
+						$req->execute(array(
+								'NumFacture'=>$_POST['NUMFACTURE'],
+								'NumProduit'=>$_POST['NUMPRODUIT']
+								));
+						echo("Les données détail factures ont bien été supprimées.");
+
+						$req->closeCursor();
+					}
+					catch (Exception $e)
+					{
+						echo('Erreur lors de la suppression du détail facture.'. $e->getMessage());
+					}
+				}
+		?>
+		<?php
+			if (isset($_POST['deleteFac']))
+				{
+					//Connexion à la base de donnée
+					Try
+					{
+						$bdd = new PDO('mysql:host=localhost;dbname=facture;charset=utf8','Florent','1234Florent',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+					}
+					catch (Exception $e)
+					{
+						die('Erreur : ' . $e->getMessage());
+					}
+					/*
+					BUT: suppression données factures
+					ENTREE: Numfacture
+					SORTIE: feedback et suppression dans la base
+					*/
+					Try 
+					{
+						$req=$bdd->prepare('DELETE FROM facture WHERE NUMFACTURE = :NumFacture');
+						$req->execute(array(
+								'NumFacture'=>$_POST['NUMFACTURE']
+								));
+						echo("Les données factures ont bien été supprimées.");
+
+						$req->closeCursor();
+					}
+					catch (Exception $e)
+					{
+						echo('Erreur lors de la suppression de la facture.'. $e->getMessage());
+					}
+				}
+		?>
 		<div id="corps">
 			<h1>Les Factures et détail factures</h1>
 				<h2>La table facture</h2>
@@ -21,6 +167,11 @@
 						{
 							die('Erreur : ' . $e->getMessage());
 						}
+						/*
+						BUT: Affichage de la table facture
+						ENTREE: 
+						SORTIE: Tableau contenant l'ensemble de la table facture
+						*/
 						Try 
 						{
 							$reponse = $bdd->query('SELECT * FROM facture');
@@ -73,6 +224,11 @@
 						{
 							die('Erreur : ' . $e->getMessage());
 						}
+						/*
+						BUT: Affichage de la table détail facture
+						ENTREE: 
+						SORTIE: Tableau contenant l'ensemble de la table détail facture
+						*/
 						Try 
 						{
 							$reponse = $bdd->query('SELECT * FROM dfacture');
@@ -116,6 +272,8 @@
 					?>
 				<h2>Mise à jour</h2>
 					<h3>Facture</h3>
+						<!--
+						Formulaire mise à jour facture avec fonction affichage numfacture et numclient dans menu déroulants-->
 						<form id="Update" action="UpdateFacture.php" method="POST">
 							<div>
 								<p>
@@ -196,37 +354,10 @@
 								<p><input type="submit" value="majfac" name="updatefac" /></p>
 							</div>
 						</form>
-						<?php
-							if (isset($_POST['updatefac']))
-								{
-									//Connexion à la base de donnée
-									Try
-									{
-										$bdd = new PDO('mysql:host=localhost;dbname=facture;charset=utf8','Florent','1234Florent',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-									}
-									catch (Exception $e)
-									{
-										die('Erreur : ' . $e->getMessage());
-									}
-									Try 
-									{
-										$req=$bdd->prepare('UPDATE facture SET DATEFACT = :DateFact,NUMCLIENT = :NumClient WHERE NUMFACTURE = :NumFacture');
-										$req->execute(array(
-												'NumFacture'=>$_POST['NUMFACTURE'],
-												'DateFact'=>$_POST['DATEFACT'],
-												'NumClient'=>$_POST["NUMCLIENT"]
-												));
-										echo("Les données facture ont bien été mise à jour.");
-
-										$req->closeCursor();
-									}
-									catch (Exception $e)
-									{
-										echo('Erreur lors de la maj de la facture.'. $e->getMessage());
-									}
-								}
-						?>
+						
 					<h3>Détail facture</h3>
+						<!--
+						Formulaire mise à jour détail facture avec fonction affichage numfacture existant et NumProduit existant dans menu déroulants-->
 						<form id="Update" action="UpdateFacture.php" method="POST">
 							<div>
 								<p>
@@ -307,38 +438,11 @@
 								<p><input type="submit" value="majdfac" name="updatedfac" /></p>
 							</div>
 						</form>
-						<?php
-							if (isset($_POST['updatedfac']))
-								{
-									//Connexion à la base de donnée
-									Try
-									{
-										$bdd = new PDO('mysql:host=localhost;dbname=facture;charset=utf8','Florent','1234Florent',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-									}
-									catch (Exception $e)
-									{
-										die('Erreur : ' . $e->getMessage());
-									}
-									Try 
-									{
-										$req=$bdd->prepare('UPDATE dfacture SET QUANTITE = :Quantite WHERE NUMFACTURE = :NumFacture AND NUMPRODUIT = :NumProduit');
-										$req->execute(array(
-												'NumFacture'=>$_POST['NUMFACTURE'],
-												'Quantite'=>$_POST['QUANTITE'],
-												'NumProduit'=>$_POST["NUMPRODUIT"]
-												));
-										echo("Les données détail facture ont bien été mise à jour.");
-
-										$req->closeCursor();
-									}
-									catch (Exception $e)
-									{
-										echo('Erreur lors de la maj du détail fac.'. $e->getMessage());
-									}
-								}
-						?>
+						
 				<h2>Delete</h2>
 					<h3>Facture</h3>
+						<!--
+						Formulaire suppression facture avec fonction affichage numfacture existant dans menu déroulants-->
 						<form id="Delete" action="UpdateFacture.php" method="POST">
 							<div>
 								<p>
@@ -381,35 +485,10 @@
 								<p><input type="submit" value="SupprFac" name="deleteFac" /></p>	
 							</div>
 						</form>
-						<?php
-							if (isset($_POST['deleteFac']))
-								{
-									//Connexion à la base de donnée
-									Try
-									{
-										$bdd = new PDO('mysql:host=localhost;dbname=facture;charset=utf8','Florent','1234Florent',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-									}
-									catch (Exception $e)
-									{
-										die('Erreur : ' . $e->getMessage());
-									}
-									Try 
-									{
-										$req=$bdd->prepare('DELETE FROM facture WHERE NUMFACTURE = :NumFacture');
-										$req->execute(array(
-												'NumFacture'=>$_POST['NUMFACTURE']
-												));
-										echo("Les données factures ont bien été supprimées.");
-
-										$req->closeCursor();
-									}
-									catch (Exception $e)
-									{
-										echo('Erreur lors de la suppression de la facture.'. $e->getMessage());
-									}
-								}
-						?>
+						
 					<h3>Détail Facture</h3>
+						<!--
+						Formulaire suppression détail facture avec fonction affichage numfacture existant et NumProduit existant dans menu déroulants-->
 						<form id="Delete" action="UpdateFacture.php" method="POST">
 							<div>
 								<p>
@@ -425,6 +504,7 @@
 											{
 												die('Erreur : ' . $e->getMessage());
 											}
+											
 											Try 
 											{
 												$reponse = $bdd->query('SELECT NUMFACTURE FROM facture ORDER BY NUMFACTURE ASC;');
@@ -489,35 +569,7 @@
 								<p><input type="submit" value="SupprdFac" name="deletedFac" /></p>	
 							</div>
 						</form>
-						<?php
-							if (isset($_POST['deletedFac']))
-								{
-									//Connexion à la base de donnée
-									Try
-									{
-										$bdd = new PDO('mysql:host=localhost;dbname=facture;charset=utf8','Florent','1234Florent',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-									}
-									catch (Exception $e)
-									{
-										die('Erreur : ' . $e->getMessage());
-									}
-									Try 
-									{
-										$req=$bdd->prepare('DELETE FROM dfacture WHERE NUMFACTURE = :NumFacture AND NUMPRODUIT = :NumProduit');
-										$req->execute(array(
-												'NumFacture'=>$_POST['NUMFACTURE'],
-												'NumProduit'=>$_POST['NUMPRODUIT']
-												));
-										echo("Les données détail factures ont bien été supprimées.");
-
-										$req->closeCursor();
-									}
-									catch (Exception $e)
-									{
-										echo('Erreur lors de la suppression du détail facture.'. $e->getMessage());
-									}
-								}
-						?>
+						
 		</div>
 	</body>
 </html>

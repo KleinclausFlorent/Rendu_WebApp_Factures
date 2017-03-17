@@ -1,4 +1,9 @@
-<?php include("Gestion_Session.php")?>
+<!-- Page permet de consulter les factures et leurs détails
+-->
+<!--
+Ajout de la feuille qui gère la déconnexion à partir du clique sur le bouton Déconnexion
+-->
+<?php include("Gestion_Session.php") ?>
 <!doctype html>
 <html lang="fr">
 	<head>
@@ -8,20 +13,29 @@
 		<script src="script.js"></script>
 	</head>
 	<body>
-		<?php include("header.php")?>
+		<!--
+		Ajout de la feuille header qui contient les liens vers les pages de la webApp
+		Le "menu"
+		-->
+		<?php include("header.php") ?>
 		<div id="corps">
 			<h1>Les Factures</h1>
 				<h2>Consulter</h2>
+					<!--formulaire de recherche facture et détail facture-->
 					<form id="Recherche" action="Factures.php" method="POST">
 						<div>
 							<p><label for="NUMFACTURE">Numéro de la facture : </label><input type="text" name="NUMFACTURE"/></p>
 							<p><label for="DATEFACT">Date de la facturation : </label><input type="text" name="DATEFACT"/></p>
-							<p><label for="NUMCLIENT">Prenom du client : </label><input type="text" name="NUMCLIENT"/></p>
+							<p><label for="NUMCLIENT">Numéro du client : </label><input type="text" name="NUMCLIENT"/></p>
 							<p><input type="submit" value="Chercher" name="seek" /></p>	
 						</div>
 					</form>
 					<?php
-					//Faire un tableau qui affiche les factures et un tableau qui affiche le détail de ces factures.
+					/*
+					BUT : Afficher les données facture et détail correspondantes à la recherche
+					ENTREE : NumFacture et/ou dateFacture et/ou NumCLIENT / clique bouton
+					SORTIE : Tableau contentant les données correspondantes à la recherche
+					*/
 						if (isset($_POST['seek']))
 						{
 							//Connexion à la base de donnée

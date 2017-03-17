@@ -3,7 +3,7 @@
 <!--
 Ajout de la feuille qui gère la déconnexion à partir du clique sur le bouton Déconnexion
 -->
-<?php include("Gestion_Session.php")?>
+<?php include("Gestion_Session.php") ?>
 <!doctype html>
 <html lang="fr">
 	<head>
@@ -13,16 +13,16 @@ Ajout de la feuille qui gère la déconnexion à partir du clique sur le bouton 
 		<script src="script.js"></script>
 	</head>
 	<body>
-		/*
+		<!--
 		Ajout de la feuille header qui contient les liens vers les pages de la webApp
 		Le "menu"
-		*/
-		<?php include("header.php")?>
+		-->
+		<?php include("header.php") ?>
 
 		<div id="corps">
 			<h1>Les Clients</h1>
 				<h2>Consulter</h2>
-				//Formulaire de recherche d'un client dans la table
+				<!--Formulaire de recherche d'un client dans la table -->
 					<form id="Recherche" action="Clients.php" method="POST">
 						<div>
 							<p><label for="NUMCLIENT">Numéro du client : </label><input type="text" name="NUMCLIENT"/></p>
@@ -36,7 +36,7 @@ Ajout de la feuille qui gère la déconnexion à partir du clique sur le bouton 
 						</div>
 					</form>
 				<h2>Ajouter</h2>
-				//Formulaire d'ajout d'un client dans la table
+				<!--Formulaire d'ajout d'un client dans la table-->
 					<form id="Ajout" action="Clients.php" method="POST">
 						<div>
 							<p><label for="NOM">Nom du client : </label><input type="text" name="NOM" required/></p>
@@ -187,7 +187,7 @@ Ajout de la feuille qui gère la déconnexion à partir du clique sur le bouton 
 						/*
 						BUT : Ajouter un client dans la basse
 						ENTREE : Appuie bouton ajout NOM ou/et PRENOM et CP et ADRESSECLIENT et VILLE et PAYS
-						SORTIE : texte pour confirmer l'ajout
+						SORTIE : texte pour confirmer l'ajout et ajout à la base
 						*/				
 						if (isset($_POST['add']))
 						{
